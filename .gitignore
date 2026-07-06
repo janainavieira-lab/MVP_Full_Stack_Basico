@@ -1,0 +1,7 @@
+﻿.env
+__pycache__/
+*.pyc
+instance/
+API/env/
+API/__pycache__/
+Front/.DS_Store
