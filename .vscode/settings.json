@@ -1,0 +1,6 @@
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}/API/env/Scripts/python.exe",
+  "python.analysis.extraPaths": [
+    "${workspaceFolder}/API"
+  ]
+}

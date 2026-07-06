@@ -1,0 +1,812 @@
+/* ═══════════════════════════════════════════════════════
+   MarmitApp — Estilos Personalizados
+   Design: "Etiquetas do Freezer"
+   
+   Conceito: cada categoria tem uma cor própria que aparece
+   como borda lateral nos cards, evocando as etiquetas
+   coloridas usadas em potes de meal prep.
+   
+   Variáveis CSS (custom properties): permitem alterar
+   toda a paleta de cores mudando apenas este bloco.
+   É o equivalente CSS de um "tema" configurável.
+═══════════════════════════════════════════════════════ */
+
+:root {
+    /* Paleta principal */
+    --bg-app:       #EDF2F7;
+    --bg-sidebar:   #1A2744;
+    --bg-card:      #FFFFFF;
+    --accent:       #00C9A7;
+    --accent-dark:  #00A88C;
+    --text-primary: #2D3748;
+    --text-light:   #718096;
+    --text-sidebar: #A0B4CC;
+    --border:       #E2E8F0;
+    --danger:       #FC5C65;
+    --danger-bg:    #FFF0F0;
+    --shadow:       0 2px 12px rgba(0, 0, 0, 0.08);
+    --shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.12);
+
+    /* Cores de categoria — a assinatura visual do projeto */
+    --cat-carboidrato: #F6B93B;
+    --cat-proteina:    #E55039;
+    --cat-vegetal:     #00C9A7;
+    --cat-prato:       #A29BFE;
+    --cat-default:     #74B9FF;
+
+    /* Dimensões */
+    --sidebar-width: 240px;
+    --radius:        10px;
+    --radius-sm:     6px;
+}
+
+/* ─── Reset e base ──────────────────────────────────── */
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    background-color: var(--bg-app);
+    color: var(--text-primary);
+    display: flex;
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+/* ─── Sidebar ───────────────────────────────────────── */
+
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--bg-sidebar);
+    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 0;
+    z-index: 100;
+}
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0 1.25rem 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.brand-icon {
+    font-size: 1.75rem;
+    line-height: 1;
+}
+
+.brand-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    letter-spacing: -0.02em;
+}
+
+.brand-tagline {
+    font-size: 0.7rem;
+    color: var(--text-sidebar);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+/* ─── Navegação da sidebar ──────────────────────────── */
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1.25rem 0.75rem;
+    flex: 1;
+}
+
+.sidebar-nav .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 0.875rem;
+    border-radius: var(--radius-sm);
+    color: var(--text-sidebar);
+    text-decoration: none;
+    font-size: 0.925rem;
+    font-weight: 500;
+    transition: background 0.18s, color 0.18s;
+}
+
+.sidebar-nav .nav-link:hover {
+    background: rgba(255,255,255,0.07);
+    color: #FFFFFF;
+}
+
+/* Estado ativo: fundo verde-menta + texto branco */
+.sidebar-nav .nav-link.active {
+    background: var(--accent);
+    color: #FFFFFF;
+}
+
+.nav-icon {
+    font-size: 1.05rem;
+    width: 1.25rem;
+    text-align: center;
+}
+
+/* ─── Status da API ─────────────────────────────────── */
+
+.sidebar-footer {
+    padding: 1rem 1.25rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.api-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+    color: var(--text-sidebar);
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #718096; /* cinza = verificando */
+    flex-shrink: 0;
+    transition: background 0.3s;
+}
+
+.status-dot.online  { background: var(--accent); }
+.status-dot.offline { background: var(--danger); }
+
+/* ─── Área de conteúdo principal ───────────────────── */
+
+.main-content {
+    margin-left: var(--sidebar-width);
+    flex: 1;
+    padding: 2rem 2.5rem;
+    max-width: 1200px;
+}
+
+/* Cada section = uma "página" da SPA */
+.app-section {
+    display: block;
+}
+
+.app-section.hidden {
+    display: none;
+}
+
+/* ─── Cabeçalho de seção ────────────────────────────── */
+
+.section-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 1.75rem;
+    gap: 1rem;
+}
+
+.section-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+}
+
+.section-desc {
+    color: var(--text-light);
+    font-size: 0.925rem;
+    margin-top: 0.2rem;
+}
+
+/* ─── Botões ─────────────────────────────────────────── */
+
+.btn-primary {
+    background: var(--accent);
+    color: #FFFFFF;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 0.6rem 1.25rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.18s, transform 0.12s;
+    white-space: nowrap;
+}
+
+.btn-primary:hover {
+    background: var(--accent-dark);
+    transform: translateY(-1px);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-ghost {
+    background: transparent;
+    color: var(--text-light);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.6rem 1.25rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.18s, color 0.18s;
+}
+
+.btn-ghost:hover {
+    border-color: var(--text-light);
+    color: var(--text-primary);
+}
+
+.btn-danger {
+    background: transparent;
+    color: var(--danger);
+    border: 1.5px solid transparent;
+    border-radius: var(--radius-sm);
+    padding: 0.4rem 0.75rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.18s, border-color 0.18s;
+}
+
+.btn-danger:hover {
+    background: var(--danger-bg);
+    border-color: var(--danger);
+}
+
+.btn-edit {
+    background: transparent;
+    color: var(--text-light);
+    border: 1.5px solid transparent;
+    border-radius: var(--radius-sm);
+    padding: 0.4rem 0.75rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s;
+}
+
+.btn-edit:hover {
+    background: var(--bg-app);
+    color: var(--text-primary);
+}
+
+/* ─── Painel de formulário ──────────────────────────── */
+
+.form-panel {
+    background: var(--bg-card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 1.75rem;
+    box-shadow: var(--shadow);
+}
+
+.form-panel.hidden { display: none; }
+
+.form-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+/* Layout em linha para formulários simples */
+.form-row {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Layout em grade para formulários com múltiplos campos */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.form-label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.form-hint {
+    font-size: 0.82rem;
+    color: var(--text-light);
+    margin-bottom: 0.75rem;
+}
+
+.form-input {
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.55rem 0.875rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    background: var(--bg-app);
+    transition: border-color 0.18s, box-shadow 0.18s;
+    width: 100%;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0, 201, 167, 0.15);
+    background: #FFFFFF;
+}
+
+.form-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+}
+
+/* ─── Filtros (chips de categoria) ──────────────────── */
+
+.filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.filter-label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+
+.filter-chips {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+/* Chips de filtro — botões compactos de categoria */
+.chip {
+    background: var(--bg-card);
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    padding: 0.3rem 0.875rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.18s;
+}
+
+.chip:hover { border-color: var(--accent); color: var(--accent); }
+.chip.active { background: var(--accent); border-color: var(--accent); color: #FFFFFF; }
+
+/* ─── Grid de cards ─────────────────────────────────── */
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+}
+
+/* ─── Cards de categoria ────────────────────────────── */
+
+.categoria-card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 1.1rem 1.25rem;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-left: 4px solid var(--cat-default);
+    transition: box-shadow 0.2s, transform 0.15s;
+}
+
+.categoria-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+}
+
+.categoria-card-nome {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+/* ─── Cards de porção ───────────────────────────────── */
+
+/*
+  A borda lateral colorida é a "assinatura" do design:
+  cada card herda a cor da sua categoria via JS,
+  evocando etiquetas coloridas em potes de freezer.
+*/
+.porcao-card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--cat-default);
+    transition: box-shadow 0.2s, transform 0.15s;
+    overflow: hidden;
+}
+
+.porcao-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+}
+
+.porcao-card-header {
+    padding: 1rem 1.25rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.porcao-card-nome {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-primary);
+    margin-bottom: 0.3rem;
+}
+
+.porcao-card-body {
+    padding: 0.875rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.porcao-info {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.84rem;
+    color: var(--text-light);
+}
+
+.porcao-info strong {
+    color: var(--text-primary);
+}
+
+/* Badge de quantidade — destaque visual */
+.badge-quantidade {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: var(--bg-app);
+    border-radius: 20px;
+    padding: 0.2rem 0.65rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    border: 1.5px solid var(--border);
+}
+
+/* Alerta de validade próxima */
+.badge-alerta {
+    background: #FFF8E1;
+    color: #E67E22;
+    border-color: #F6B93B;
+}
+
+.badge-vencida {
+    background: var(--danger-bg);
+    color: var(--danger);
+    border-color: var(--danger);
+}
+
+.porcao-card-footer {
+    padding: 0.65rem 1.25rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+/* ─── Badge de categoria (etiqueta colorida) ─────────── */
+
+.badge-categoria {
+    display: inline-block;
+    padding: 0.2rem 0.65rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #FFFFFF;
+    background: var(--cat-default);
+}
+
+/* ─── Cards de refeição ─────────────────────────────── */
+
+.refeicao-card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border-top: 3px solid var(--accent);
+    transition: box-shadow 0.2s, transform 0.15s;
+}
+
+.refeicao-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+}
+
+.refeicao-card-header {
+    padding: 1rem 1.25rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.refeicao-card-nome {
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.refeicao-card-data {
+    font-size: 0.8rem;
+    color: var(--text-light);
+}
+
+.refeicao-card-body {
+    padding: 0.875rem 1.25rem;
+}
+
+.refeicao-porcoes-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.refeicao-porcao-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.refeicao-card-footer {
+    padding: 0.65rem 1.25rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* ─── Grid de seleção de porções (no form de refeição) ── */
+
+.porcoes-selecao-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+/* Cada item selecionável tem aparência de checkbox customizado */
+.porcao-selecao-item {
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.65rem 0.875rem;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    transition: border-color 0.18s, background 0.18s;
+    user-select: none;
+}
+
+.porcao-selecao-item:hover {
+    border-color: var(--accent);
+    background: #F0FBF9;
+}
+
+.porcao-selecao-item.selecionada {
+    border-color: var(--accent);
+    background: #E6FAF6;
+}
+
+.porcao-selecao-item input[type="checkbox"] {
+    margin-top: 2px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+}
+
+.porcao-selecao-nome {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--text-primary);
+}
+
+.porcao-selecao-cat {
+    font-size: 0.78rem;
+    color: var(--text-light);
+}
+
+/* ─── Seção de sugestão ─────────────────────────────── */
+
+.sugestao-card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 2rem;
+    max-width: 560px;
+}
+
+.sugestao-titulo {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sugestao-porcoes {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.sugestao-item {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    padding: 0.75rem 1rem;
+    background: var(--bg-app);
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--cat-default);
+}
+
+.sugestao-item-nome {
+    font-weight: 600;
+    font-size: 0.925rem;
+}
+
+.sugestao-item-detalhe {
+    font-size: 0.82rem;
+    color: var(--text-light);
+}
+
+/* ─── Estado vazio ──────────────────────────────────── */
+
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-light);
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    border: 2px dashed var(--border);
+    grid-column: 1 / -1; /* ocupa toda a largura do grid */
+}
+
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: 0.75rem;
+    opacity: 0.6;
+}
+
+/* ─── Modal de edição ───────────────────────────────── */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(26, 39, 68, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    padding: 1rem;
+    backdrop-filter: blur(2px);
+}
+
+.modal-overlay.hidden { display: none; }
+
+.modal-box {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    width: 100%;
+    max-width: 440px;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.modal-header h3 {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1rem;
+    color: var(--text-light);
+    cursor: pointer;
+    padding: 0.25rem;
+    transition: color 0.15s;
+}
+
+.modal-close:hover { color: var(--danger); }
+
+.modal-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.modal-footer {
+    display: flex;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem 1.25rem;
+    border-top: 1px solid var(--border);
+}
+
+/* ─── Toast de notificação ──────────────────────────── */
+
+.toast {
+    position: fixed;
+    bottom: 1.75rem;
+    right: 1.75rem;
+    background: #2D3748;
+    color: #FFFFFF;
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    font-weight: 500;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    z-index: 999;
+    max-width: 320px;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.toast.hidden {
+    display: none;
+}
+
+.toast.sucesso { border-left: 4px solid var(--accent); }
+.toast.erro    { border-left: 4px solid var(--danger); }
+
+/* ─── Responsive básico ─────────────────────────────── */
+
+@media (max-width: 768px) {
+    .sidebar { width: 100%; min-height: auto; position: relative; }
+    .main-content { margin-left: 0; padding: 1.25rem; }
+    body { flex-direction: column; }
+    .section-header { flex-direction: column; align-items: flex-start; }
+    .cards-grid { grid-template-columns: 1fr; }
+}
